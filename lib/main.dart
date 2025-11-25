@@ -7,7 +7,13 @@ void main() {
   runApp(
     MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (ctx)=> ProductsProvider())
+      ChangeNotifierProvider(
+          create: (ctx) {
+            final productProvider = ProductsProvider();
+            productProvider.fetchProducts();
+            return productProvider;
+          },
+        )
     ],
     child: ShopApp()
     ));
