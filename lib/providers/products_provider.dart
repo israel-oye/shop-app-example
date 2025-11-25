@@ -13,15 +13,30 @@ class ProductsProvider extends ChangeNotifier{
     )
   );
   final String endpoint = '/7e09ae95cabb76d14f1b';
-  final List<Product> _items = [];
+  String? _error;
+  bool _isLoading = false;
+  List<Product> _items = [];
 
   List<Product> get items => _items;
+  String? get error => _error;
+  bool get isLoading => _isLoading;
 
-  fetchProducts() async{
-    final response = await dio.get(endpoint);
-    final data = response.data as List<dynamic>;
+  Future<void> fetchProducts() async{
+    _isLoading = true;
+    notifyListeners();
 
-    // data.map((item)=> Prod)
+    try {
+      final response = await dio.get(endpoint);
+      final data = response.data as List<dynamic>;
+
+      _items = data.map((item) => Product.fromJson(item)).toList();
+    } on DioException catch (e) {
+      _error = e.message;
+    } finally{
+      _isLoading = false;
+      notifyListeners();
+    }
+    
   }
   
 }
