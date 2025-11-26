@@ -22,11 +22,13 @@ class HomeScreen extends StatelessWidget {
           onRefresh: ()async{
             provider.fetchProducts();
           },
-          child: ListView.builder(
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
             itemCount: provider.items.length,
+            separatorBuilder: (ctx, idx)=> SizedBox(height: 8,),
             itemBuilder: (ctx, idx) {
               Product currentProduct = provider.items[idx];
-              return ProductItem(product: currentProduct);
+              return Card(child: ProductItem(product: currentProduct));
             },
           ),
         );
