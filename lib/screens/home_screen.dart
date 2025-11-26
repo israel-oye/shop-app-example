@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/widgets/product_item.dart';
 
@@ -20,6 +21,7 @@ class HomeScreen extends StatelessWidget {
         }
         return RefreshIndicator(
           onRefresh: ()async{
+            context.read<CartProvider>().clearCart();
             provider.fetchProducts();
           },
           child: ListView.separated(
