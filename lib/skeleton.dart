@@ -27,7 +27,16 @@ class _SkeletonState extends State<Skeleton> {
       appBar: AppBar(
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
-        title: Text('Shop'),
+        title: Text(_currentPageIndex == 0? 'Home': 'Cart'),
+        actions: [
+          if (_currentPageIndex == 1)
+            IconButton(
+              onPressed: (){
+                context.read<CartProvider>().clearCart();
+            },
+            icon: Icon(Icons.remove_shopping_cart)),
+          SizedBox(width: 8,)
+        ],
       ),
       body: pages[_currentPageIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -46,7 +55,7 @@ class _SkeletonState extends State<Skeleton> {
             icon: Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(Icons.shopping_cart),
+                Icon(_currentPageIndex == 1? Icons.shopping_cart : Icons.shopping_cart_outlined),
                 Positioned(
                   right: -8,
                   top: -8,
