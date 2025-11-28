@@ -15,13 +15,11 @@ class CartProvider extends ChangeNotifier{
 
   void addToCart(Product product){
     _items.add(product);
-    print(_items.map((item) => print(item.name)).toList());
     notifyListeners();
   }
 
   void removeFromCart(Product product){
     _items.remove(product);
-    print(_items.map((item)=> print(item.name)).toList());
     notifyListeners();
   }
 
