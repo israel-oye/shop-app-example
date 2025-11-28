@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/home_screen.dart';
 
@@ -56,9 +58,11 @@ class _SkeletonState extends State<Skeleton> {
                       color: const Color.fromARGB(205, 211, 77, 68),
                       shape: BoxShape.circle
                     ),
-                    child: Text(
-                      '10',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    child: Consumer<CartProvider>(
+                      builder: (ctx, provider, child)=> Text(
+                        "${provider.items.length}",
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
                     ),
                   ),
                 )
