@@ -41,7 +41,29 @@ class _SkeletonState extends State<Skeleton> {
             label: 'Home'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(Icons.shopping_cart),
+                Positioned(
+                  right: -8,
+                  top: -8,
+                  child: Container(
+                    height: 18,
+                    width: 18,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(205, 211, 77, 68),
+                      shape: BoxShape.circle
+                    ),
+                    child: Text(
+                      '10',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ),
+                )
+                ]
+              ),
             label: 'Cart',
           )
         ]
