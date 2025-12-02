@@ -1,17 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/repository/product_repository.dart';
 
 class ProductsProvider extends ChangeNotifier{
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.npoint.io',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    )
-  );
-  final String endpoint = '/7e09ae95cabb76d14f1b';
+  final ProductRepository _repository;
   String? _error;
   bool _isLoading = false;
   List<Product> _items = [];
@@ -20,15 +13,14 @@ class ProductsProvider extends ChangeNotifier{
   String? get error => _error;
   bool get isLoading => _isLoading;
 
+  ProductsProvider(this._repository);
+
   Future<void> fetchProducts() async{
     _isLoading = true;
     notifyListeners();
 
     try {
-      final response = await dio.get(endpoint);
-      final data = response.data as List<dynamic>;
-
-      _items = data.map((item) => Product.fromJson(item)).toList();
+      _items = await _repository.fetchProducts();
     } on DioException catch (e) {
       _error = e.message;
     } finally{
