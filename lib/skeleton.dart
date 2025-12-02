@@ -48,14 +48,20 @@ class _SkeletonState extends State<Skeleton> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              _currentPageIndex == 0 ? Icons.home : Icons.home_outlined,
+            ),
             label: 'Home'
           ),
           BottomNavigationBarItem(
             icon: Stack(
               clipBehavior: Clip.none,
               children: [
-                Icon(_currentPageIndex == 1? Icons.shopping_cart : Icons.shopping_cart_outlined),
+                Icon(
+                  _currentPageIndex == 1
+                      ? Icons.shopping_cart
+                      : Icons.shopping_cart_outlined,
+                ),
                 Positioned(
                   right: -8,
                   top: -8,
