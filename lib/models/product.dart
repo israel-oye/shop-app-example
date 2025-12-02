@@ -21,4 +21,11 @@ class Product{
       avatar: Color(json['color']),
     );
   }
+
+  Map<String, dynamic> toJson()=> {
+    'id': id,
+    'name': name,
+    'price': price,
+    'avatar': avatar.toARGB32(),
+  };
 }
