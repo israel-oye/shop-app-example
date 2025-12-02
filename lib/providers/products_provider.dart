@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/data/products.dart' as data;
 import 'package:shop_app/models/product.dart';
 
 class ProductsProvider extends ChangeNotifier{
