@@ -19,6 +19,22 @@ class HomeScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+
+        if (provider.error != null){
+          return Center(
+            child: Column(
+              children: [
+                Text(provider.error!),
+                ElevatedButton(
+                  onPressed: (){
+                    provider.fetchProducts();
+                  },
+                  child: Text('Retry'),
+                )
+              ]
+            ),
+          );
+        }
         return RefreshIndicator(
           onRefresh: ()async{
             context.read<CartProvider>().clearCart();
