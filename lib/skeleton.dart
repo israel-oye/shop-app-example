@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/screens/cart_screen.dart';
 import 'package:shop_app/screens/home_screen.dart';
+import 'package:shop_app/screens/new_item_screen.dart';
 
 class Skeleton extends StatefulWidget {
   const Skeleton({super.key});
@@ -13,9 +14,10 @@ class Skeleton extends StatefulWidget {
 
 class _SkeletonState extends State<Skeleton> {
   int _currentPageIndex = 0;
-
+  String _currentPageTitle = '';
   List<Widget> pages = [
     const HomeScreen(),
+    const NewItemScreen(),
     const CartScreen(),
   ];
 
@@ -23,13 +25,21 @@ class _SkeletonState extends State<Skeleton> {
   Widget build(BuildContext context) {
   final theme = Theme.of(context);
 
+  if (_currentPageIndex == 0) {
+      _currentPageTitle = 'Home';
+    } else if (_currentPageIndex == 1) {
+      _currentPageTitle = 'Add Item';
+    } else if (_currentPageIndex == 2) {
+      _currentPageTitle = 'Cart';
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
-        title: Text(_currentPageIndex == 0? 'Home': 'Cart'),
+        title: Text(_currentPageTitle),
         actions: [
-          if (_currentPageIndex == 1)
+          if (_currentPageIndex == 2)
             ClearCartButton(),
           SizedBox(width: 8,)
         ],
@@ -50,11 +60,19 @@ class _SkeletonState extends State<Skeleton> {
             label: 'Home'
           ),
           BottomNavigationBarItem(
+            icon: Icon(
+              _currentPageIndex == 1
+                  ? Icons.add_box_rounded
+                  : Icons.add_box_outlined,
+            ), 
+            label: 'Add'
+          ),
+          BottomNavigationBarItem(
             icon: Stack(
               clipBehavior: Clip.none,
               children: [
                 Icon(
-                  _currentPageIndex == 1
+                  _currentPageIndex == 2
                       ? Icons.shopping_cart
                       : Icons.shopping_cart_outlined,
                 ),
