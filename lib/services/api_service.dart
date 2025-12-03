@@ -13,7 +13,7 @@ class ApiService{
   Future<List<Product>> getProducts() async{
     final response = await _dio.get(endpoint);
     final data = response.data as List<dynamic>;
-    data.map((item) => Product.fromJson(item)).toList();
-    return data as List<Product>;
+    final products = data.map((item) => Product.fromJson(item)).toList();
+    return products;
   }
 }

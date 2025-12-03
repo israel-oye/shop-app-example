@@ -23,6 +23,9 @@ class ProductsProvider extends ChangeNotifier{
       _items = await _repository.fetchProducts();
     } on DioException catch (e) {
       _error = e.message;
+    } 
+    on Exception catch (e){
+      _error = e.toString();
     } finally{
       _isLoading = false;
       notifyListeners();
