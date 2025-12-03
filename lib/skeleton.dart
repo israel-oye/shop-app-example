@@ -30,11 +30,7 @@ class _SkeletonState extends State<Skeleton> {
         title: Text(_currentPageIndex == 0? 'Home': 'Cart'),
         actions: [
           if (_currentPageIndex == 1)
-            IconButton(
-              onPressed: (){
-                context.read<CartProvider>().clearCart();
-            },
-            icon: Icon(Icons.remove_shopping_cart)),
+            ClearCartButton(),
           SizedBox(width: 8,)
         ],
       ),
@@ -87,6 +83,48 @@ class _SkeletonState extends State<Skeleton> {
           )
         ]
       ),
+    );
+  }
+}
+
+class ClearCartButton extends StatelessWidget {
+  const ClearCartButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CartProvider>(
+      builder: (ctx, provider, _) => IconButton(
+        onPressed: provider.items.isEmpty
+            ? null
+            : () {
+                showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text('Clear Cart'),
+                    content: Text(
+                      'Are you sure you want to clear the cart?',
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          context.read<CartProvider>().clearCart();
+                          Navigator.pop(ctx);
+                        },
+                        child: Text('OK'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(ctx);
+                        },
+                        child: Text('Cancel'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+      icon: Icon(Icons.remove_shopping_cart)),
     );
   }
 }
