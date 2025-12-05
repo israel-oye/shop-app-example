@@ -36,6 +36,9 @@ class ShopApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF286E6B)),
+        inputDecorationTheme: InputDecorationTheme().copyWith(
+          border: OutlineInputBorder()
+        )
       ),
       home: RootScreen(),
     );
