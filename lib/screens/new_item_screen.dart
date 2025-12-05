@@ -27,11 +27,18 @@ class _NewItemScreenState extends State<NewItemScreen> {
   Column _buildForm() {
     return Column(
         children: [
+          // Name TextInput
           TextFormField(
             decoration: InputDecoration(
               label: Text('Name'),
               hintText: "Name of Product"
             ),
+            validator: (value) {
+              if (value == null || value.trim().isEmpty || value.length < 5) {
+                return 'Please enter a valid name between 5 and 50 characters';
+              }
+              return null;
+            },
             
           ),
           SizedBox(height: 12,),
@@ -39,6 +46,8 @@ class _NewItemScreenState extends State<NewItemScreen> {
             mainAxisSize: MainAxisSize.min,
             spacing: 8,
             children: [
+
+              // Quantity TextInput
               Flexible(
                 child: TextFormField(
                   initialValue: '1',
@@ -48,8 +57,18 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   decoration: InputDecoration(
                     label: const Text('Qty')
                   ),
+                  validator: (value){
+                    if (value == null ||
+                      int.tryParse(value) == null ||
+                      int.parse(value) < 1) {
+                        return 'Invalid quantity';
+                      }
+                    return null;
+                  },
                 )
               ),
+              
+              // Price TextInput
               Flexible(
                 flex: 2,
                 child: TextFormField(
@@ -64,11 +83,20 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       ),
                     )
                   ),
+                  validator: (value){
+                    if (value == null ||
+                      value.trim().isEmpty ||
+                      double.parse(value) <= 0.0) {
+                    return 'Invalid price';
+                  }
+                  return null;
+                  },
                 )
               ),
             ],
           ),
           SizedBox(height: 12,),
+          // Dropdown Button
           DropdownButtonFormField<AvatarChoice>(
             initialValue: chosenAvatar,
             items: AvatarChoice.values.map(
