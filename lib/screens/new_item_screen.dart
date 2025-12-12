@@ -39,7 +39,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
               }
               return null;
             },
-            
+            onSaved: (value){
+              enteredName = value!;
+            },
           ),
           SizedBox(height: 12,),
           Row(
@@ -65,6 +67,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
                       }
                     return null;
                   },
+                  onSaved: (value){
+                    enteredQty = int.parse(value!);
+                  },
                 )
               ),
               
@@ -87,9 +92,12 @@ class _NewItemScreenState extends State<NewItemScreen> {
                     if (value == null ||
                       value.trim().isEmpty ||
                       double.parse(value) <= 0.0) {
-                    return 'Invalid price';
-                  }
-                  return null;
+                        return 'Invalid price';
+                    }
+                    return null;
+                  },
+                  onSaved: (val){
+                    enteredPrice = double.parse(val!);
                   },
                 )
               ),
@@ -118,6 +126,9 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   )
             ).toList(), 
             onChanged: (val){},
+            onSaved: (value){
+              chosenAvatar = value!;
+            },
           ),
           SizedBox(height: 12,),
           Row(
