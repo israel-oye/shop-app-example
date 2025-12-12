@@ -13,12 +13,39 @@ class _NewItemScreenState extends State<NewItemScreen> {
   int enteredQty = 1;
   double enteredPrice = 0.0;
   AvatarChoice chosenAvatar = AvatarChoice.blue;
+  bool isSubmitting = false;
+  final _formKey = GlobalKey<FormState>();
+
+  void _submitForm() async{
+    if (!_formKey.currentState!.validate())return;
+
+    setState(() {
+      isSubmitting = true;
+    });
+    await Future.delayed(Duration(seconds: 3), (){
+      _formKey.currentState!.save();
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$enteredName saved successfully')
+      )
+    );
+    _formKey.currentState!.reset();
+    });
+    
+    setState(() {
+      isSubmitting = false;
+    });
+    print([enteredName, enteredQty, enteredPrice, chosenAvatar.name]);
+    // 
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsetsGeometry.symmetric(vertical: 16, horizontal: 24),
       child: Form(
+        key: _formKey,
         child: _buildForm()
       ),
     );
@@ -34,7 +61,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
               hintText: "Name of Product"
             ),
             validator: (value) {
-              if (value == null || value.trim().isEmpty || value.length < 5) {
+              if (value == null || value.trim().isEmpty || value.length < 3) {
                 return 'Please enter a valid name between 5 and 50 characters';
               }
               return null;
@@ -81,7 +108,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
                   decoration: InputDecoration(
                     label: const Text('Price'),
                     prefix: Text(
-                      '₦', 
+                      '₦ ', 
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold
@@ -106,7 +133,7 @@ class _NewItemScreenState extends State<NewItemScreen> {
           SizedBox(height: 12,),
           // Dropdown Button
           DropdownButtonFormField<AvatarChoice>(
-            initialValue: chosenAvatar,
+            initialValue: AvatarChoice.blue,
             items: AvatarChoice.values.map(
               (avatar) => DropdownMenuItem(
                     value: avatar,
@@ -135,12 +162,28 @@ class _NewItemScreenState extends State<NewItemScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {}, 
+                onPressed: () {
+                  _formKey.currentState!.reset();
+                }, 
                 child: Text('Reset')
               ),
               ElevatedButton(
-                onPressed: () {}, 
-                child: Text('Save')
+                onPressed: isSubmitting ? null : _submitForm,
+                child: 
+                isSubmitting 
+                  ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('Saving'), 
+                      SizedBox(width: 6,),
+                      SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator()
+                        )
+                      ]
+                    )
+                  : Text('Save')
               ),
             ],
           )
