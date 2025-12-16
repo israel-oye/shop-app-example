@@ -1,5 +1,10 @@
+import 'dart:math' as math;
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/data/avatars.dart';
+import 'package:shop_app/models/product.dart';
+
 
 class NewItemScreen extends StatefulWidget {
   const NewItemScreen({super.key});
@@ -22,22 +27,49 @@ class _NewItemScreenState extends State<NewItemScreen> {
     setState(() {
       isSubmitting = true;
     });
-    await Future.delayed(Duration(seconds: 3), (){
-      _formKey.currentState!.save();
+    
+    _formKey.currentState!.save();
+
+    final random = math.Random();
+    Product newProduct = Product(
+      id: random.nextInt(20) + 1,
+      name: enteredName,
+      price: enteredPrice,
+      avatar: chosenAvatar.color
+    );
+    await _saveToDB(newProduct);
+
+    if(!mounted){
+        return;      
+    }
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('$enteredName saved successfully')
-      )
+      SnackBar(content: Text('$enteredName saved successfully')),
     );
-    _formKey.currentState!.reset();
-    });
+  _formKey.currentState!.reset();
+    
     
     setState(() {
       isSubmitting = false;
     });
-    print([enteredName, enteredQty, enteredPrice, chosenAvatar.name]);
-    // 
+    
+  }
+
+  Future<void> _saveToDB(Product product) async {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: 'https://shop-app-demo-f7536-default-rtdb.firebaseio.com/',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      )
+    );
+
+    final response =  await dio.post('/products.json', data: product.toJson());
+    final data = response.data;
+    print(data);
+    print(response.statusCode);
   }
 
   @override
